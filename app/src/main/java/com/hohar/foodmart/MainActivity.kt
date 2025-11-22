@@ -37,9 +37,6 @@ import com.hohar.foodmart.viewmodel.FoodMartViewModel
 import com.hohar.foodmart.viewmodel.UiState
 
 class MainActivity : ComponentActivity() {
-    private var foodList: ArrayList<Food> = arrayListOf()
-    private var foodCategories: ArrayList<FoodCategory> = arrayListOf()
-
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,14 +71,14 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ) { innerPadding ->
-                            Greeting(
-                                name = "Android",
-                                modifier = Modifier.padding(innerPadding)
-                            )
+                            val foodList by viewModel.foodList.collectAsState()
+                            val foodCategories by viewModel.foodCategories.collectAsState()
                             Column(
                                 modifier = Modifier.fillMaxSize().padding(innerPadding)
                             ) {
-                                FoodList(foodList, foodCategories)
+                                FoodList(foodList as ArrayList<Food>,
+                                    foodCategories as ArrayList<FoodCategory>
+                                )
                             }
                         }
                     }
@@ -111,13 +108,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Composable
 fun FoodList(foodList: ArrayList<Food>, foodCategory: ArrayList<FoodCategory>) {
@@ -147,14 +137,5 @@ fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
                 Text(text = category.name ?: "")
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FoodMartTheme {
-        Greeting("Android")
     }
 }
