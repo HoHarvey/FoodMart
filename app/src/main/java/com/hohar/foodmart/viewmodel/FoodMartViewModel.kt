@@ -114,4 +114,8 @@ class FoodMartViewModel: ViewModel(){
         }
     }
 
+    fun retry(){
+        fetchFoodMart()
+    }
+
 }
