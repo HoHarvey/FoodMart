@@ -135,12 +135,12 @@ fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
         .padding(8.dp)) {
         Image(
             painter = rememberAsyncImagePainter(food.image_url),
-            contentDescription = food.title,
+            contentDescription = food.name,
             modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
-        Text(text = food.title ?: "")
+        Text(text = food.name ?: "")
         Text(text = food.price.toString())
         foodCategory.forEach { category ->
             if (category.uuid == food.category_uuid) {
