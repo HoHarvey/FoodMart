@@ -131,7 +131,7 @@ fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
                 .clip(RoundedCornerShape(8.dp))
         )
         Text(text = food.name ?: "")
-        Text(text = food.price.toString())
+        Text(text = "$"+food.price.toString())
         foodCategory.forEach { category ->
             if (category.uuid == food.category_uuid) {
                 Text(text = category.name ?: "")
