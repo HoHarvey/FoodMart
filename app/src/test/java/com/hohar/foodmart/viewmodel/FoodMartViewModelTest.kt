@@ -1,9 +1,5 @@
 package com.hohar.foodmart.viewmodel
 
-import com.hohar.foodmart.model.Food
-import com.hohar.foodmart.model.FoodCategory
-import io.mockk.coEvery
-import io.mockk.mockk
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
