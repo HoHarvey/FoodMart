@@ -89,6 +89,17 @@ class MainActivity : ComponentActivity() {
                         ) { innerPadding ->
                             val foodList by viewModel.foodList.collectAsState()
                             val foodCategories by viewModel.foodCategories.collectAsState()
+                            val selectedCategories by viewModel.selectedCategories.collectAsState()
+                            val filteredFoodList = remember(foodList, selectedCategories) {
+                                if (selectedCategories.isEmpty()) {
+                                    foodList
+                                } else {
+                                    foodList.filter { food ->
+                                        food.category_uuid != null && selectedCategories.
+                                        contains(food.category_uuid)
+                                    }
+                                }
+                            }
                             Column(
                                 modifier = Modifier.fillMaxSize().
                                     padding(innerPadding)
@@ -107,7 +118,7 @@ class MainActivity : ComponentActivity() {
                                             })
                                     )
                                 }
-                                FoodList(foodList as ArrayList<Food>,
+                                FoodList(filteredFoodList as ArrayList<Food>,
                                     foodCategories as ArrayList<FoodCategory>
                                 )
                                 if (showBottomSheet) {
@@ -119,7 +130,11 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         // Sheet content
                                         FoodCategoryFilters(
-                                            foodCategories as ArrayList<FoodCategory>
+                                            foodCategories = foodCategories as ArrayList<FoodCategory>,
+                                            selectedCategories = selectedCategories,
+                                            onCategoryToggle = { categoryUuid ->
+                                                viewModel.toggleCategorySelection(categoryUuid)
+                                            }
                                         )
                                     }
                                 }
@@ -190,19 +205,22 @@ fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
 }
 
 @Composable
-fun FoodCategoryFilters(foodCategory: ArrayList<FoodCategory>){
+fun FoodCategoryFilters(
+    foodCategories: ArrayList<FoodCategory>,
+    selectedCategories: Set<String>,
+    onCategoryToggle: (String) -> Unit
+){
     Column(modifier = Modifier
         .fillMaxWidth()) {
-        foodCategory.forEach { category ->
+        foodCategories.forEach { category ->
             Row(modifier = Modifier
                 .padding(8.dp)) {
                 Text(text = category.name ?: "")
                 Spacer(modifier = Modifier.weight(1f))
-                var checked by remember { mutableStateOf(false) }
                 Switch(
-                    checked = checked,
+                    checked = selectedCategories.contains(category.uuid),
                     onCheckedChange = {
-                        checked = it
+                        onCategoryToggle(category.uuid)
                     }
                 )
             }

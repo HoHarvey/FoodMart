@@ -70,6 +70,20 @@ class FoodMartViewModel: ViewModel(){
      */
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    /**
+     * Mutable StateFlow containing the set of selected category UUIDs for filtering.
+     * This is the internal state that should not be exposed directly to the UI.
+     */
+    private val _selectedCategories = MutableStateFlow<Set<String>>(emptySet())
+
+    /**
+     * Public StateFlow exposing the selected categories to the UI.
+     * This is the immutable version that the UI should observe.
+     * Changes to this flow will automatically trigger UI recomposition.
+     */
+    val selectedCategories: StateFlow<Set<String>> = _selectedCategories.asStateFlow()
+
+
     init {
         fetchFoodMart()
     }
@@ -116,6 +130,20 @@ class FoodMartViewModel: ViewModel(){
 
     fun retry(){
         fetchFoodMart()
+    }
+
+    /**
+     * Toggles the selection state of a category.
+     * If the category is already selected, it will be removed from the selection.
+     * If the category is not selected, it will be added to the selection.
+     *
+     */
+    fun toggleCategorySelection(categoryUuid: String) {
+        _selectedCategories.value = if (_selectedCategories.value.contains(categoryUuid)) {
+            _selectedCategories.value - categoryUuid
+        } else {
+            _selectedCategories.value + categoryUuid
+        }
     }
 
 }
