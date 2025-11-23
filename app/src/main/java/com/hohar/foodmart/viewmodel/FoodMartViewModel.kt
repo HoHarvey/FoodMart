@@ -23,7 +23,9 @@ sealed class UiState {
 }
 
 
-class FoodMartViewModel: ViewModel(){
+class FoodMartViewModel(
+    private val baseUrl: String = "https://7shifts.github.io/mobile-takehome/api"
+): ViewModel(){
     /**
      * HTTP client for making network requests to the FoodMart APIs.
      * Configured as a private property to ensure proper lifecycle management.
@@ -93,13 +95,13 @@ class FoodMartViewModel: ViewModel(){
             _uiState.value = UiState.Loading
             try {
                 val requestFood = Request.Builder()
-                    .url("https://7shifts.github.io/mobile-takehome/api/food_items.json")
+                    .url("$baseUrl/food_items.json")
                     .build()
                 val responseFood = withContext(Dispatchers.IO) {
                     client.newCall(requestFood).execute()
                 }
                 val requestFoodCategory = Request.Builder()
-                    .url("https://7shifts.github.io/mobile-takehome/api/food_item_categories.json")
+                    .url("$baseUrl/food_item_categories.json")
                     .build()
                 val responseFoodCategory = withContext(Dispatchers.IO) {
                     client.newCall(requestFoodCategory).execute()
