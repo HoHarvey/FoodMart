@@ -26,22 +26,17 @@ sealed class UiState {
 class FoodMartViewModel(
     private val baseUrl: String = "https://7shifts.github.io/mobile-takehome/api"
 ): ViewModel(){
-    /**
-     * HTTP client for making network requests to the FoodMart APIs.
-     * Configured as a private property to ensure proper lifecycle management.
-     */
+    // HTTP client for making network requests to the FoodMart APIs
     private val client = OkHttpClient()
 
     /**
      * Mutable StateFlow containing the list of food categories.
-     * This is the internal state that should not be exposed directly to the UI.
      * Updates are made through ViewModel methods to maintain data integrity.
      */
     private val _foodCategories = MutableStateFlow<List<FoodCategory>>(emptyList())
 
     /**
      * Mutable StateFlow containing the list of food.
-     * This is the internal state that should not be exposed directly to the UI.
      * Updates are made through ViewModel methods to maintain data integrity.
      */
     private val _foodList = MutableStateFlow<List<Food>>(emptyList())

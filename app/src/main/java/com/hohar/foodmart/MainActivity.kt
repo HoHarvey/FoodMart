@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+                    // Show food list on success
                     is UiState.Success -> {
                         val sheetState = rememberModalBottomSheetState()
                         var showBottomSheet by remember { mutableStateOf(false) }
@@ -141,6 +142,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+                    // Show error message on failure
                     is UiState.Error -> {
                         Column(
                             modifier = Modifier.fillMaxSize(),
@@ -167,7 +169,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+// UI for displaying food items
 @Composable
 fun FoodList(foodList: ArrayList<Food>, foodCategory: ArrayList<FoodCategory>) {
     LazyVerticalGrid(
@@ -182,6 +184,7 @@ fun FoodList(foodList: ArrayList<Food>, foodCategory: ArrayList<FoodCategory>) {
     }
 }
 
+// UI to show a single food item
 @Composable
 fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
     Column(modifier = Modifier
@@ -204,6 +207,7 @@ fun FoodItem(food: Food, foodCategory: ArrayList<FoodCategory>){
     }
 }
 
+// UI to show food category filters
 @Composable
 fun FoodCategoryFilters(
     foodCategories: ArrayList<FoodCategory>,
