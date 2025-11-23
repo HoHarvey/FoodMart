@@ -1,5 +1,6 @@
 package com.hohar.foodmart
 
+import android.R.attr.onClick
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -51,6 +52,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.hohar.foodmart.model.Food
 import com.hohar.foodmart.model.FoodCategory
 import com.hohar.foodmart.ui.theme.FoodMartTheme
+import com.hohar.foodmart.ui.theme.Purple40
+import com.hohar.foodmart.ui.theme.Purple80
 import com.hohar.foodmart.viewmodel.FoodMartViewModel
 import com.hohar.foodmart.viewmodel.UiState
 import kotlinx.coroutines.launch
@@ -76,7 +79,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             CircularProgressIndicator()
                             Text(
-                                text = "Loading podcasts...",
+                                text = "Loading FoodMart...",
                                 modifier = Modifier.padding(top = 16.dp)
                             )
                         }
@@ -91,22 +94,28 @@ class MainActivity : ComponentActivity() {
                                 TopAppBar(
                                     title = { Text(text = "Food") }
                                 )
-                            },
-                            floatingActionButton = {
-                                ExtendedFloatingActionButton(
-                                    text = { Text("Show bottom sheet") },
-                                    icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                                    onClick = {
-                                        showBottomSheet = true
-                                    }
-                                )
                             }
                         ) { innerPadding ->
                             val foodList by viewModel.foodList.collectAsState()
                             val foodCategories by viewModel.foodCategories.collectAsState()
                             Column(
-                                modifier = Modifier.fillMaxSize().padding(innerPadding)
+                                modifier = Modifier.fillMaxSize().
+                                    padding(innerPadding)
                             ) {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    Text(
+                                        text = "Filter",
+                                        color = Purple80,
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .clickable(onClick = {
+                                                showBottomSheet = true
+                                            })
+                                    )
+                                }
                                 FoodList(foodList as ArrayList<Food>,
                                     foodCategories as ArrayList<FoodCategory>
                                 )
